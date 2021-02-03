@@ -146,9 +146,42 @@ void PrintInOrder(tree *tree)
     }
 }
 
+void PrintInOrderReverse(tree *tree)
+{
+    if(IsEmpty(tree))
+    {
+        printf("Arvore Vazia\n");
+    }else
+    {
+        if(tree->right != NULL)
+        {
+            PrintInOrderReverse(tree->right);
+        }
+        printf("%d\n", tree->element->value);
+        if(tree->left != NULL)
+        {
+            PrintInOrderReverse(tree->left);
+        }
+    }
+}
+
 void PrintPostOrder(tree *tree)
 {
-    
+    if(IsEmpty(tree)) 
+    {
+        printf("Arvore vazia\n");
+    }else
+    {
+        if(tree->right != NULL)
+        {
+            PrintPostOrder(tree->right);
+        }
+        if(tree->left != NULL)
+        {
+            PrintPostOrder(tree->left);
+        }
+        printf("%d\n", tree->element->value);
+    }
 }
 
 int main()
@@ -180,5 +213,8 @@ int main()
 
     // PrintPreOrder(tree);
     PrintInOrder(tree);
+    printf("Reverso\n");
+    PrintInOrderReverse(tree);
+    // PrintPostOrder(tree);
     return 0;
 }

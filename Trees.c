@@ -212,9 +212,9 @@ int main()
     // }
 
     // PrintPreOrder(tree);
-    PrintInOrder(tree);
-    printf("Reverso\n");
-    PrintInOrderReverse(tree);
+    //PrintInOrder(tree);
+    //printf("In-OrderReverso\n");
+    //PrintInOrderReverse(tree);
     // PrintPostOrder(tree);
     return 0;
 }

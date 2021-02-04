@@ -89,6 +89,7 @@ tree* Remove(tree *curTree, int value)
             //O Elemento está em um nó folha
             if(curTree->left == NULL && curTree->right == NULL)
             {
+                free(curTree);
                 return NULL;
             }else 
             {
@@ -111,7 +112,7 @@ tree* Remove(tree *curTree, int value)
                     temp->element = CreateNode(value); 
 
                     curTree->left = Remove(curTree->left, value);
-                    //free(temp);
+                    free(temp);
                 }
             }
         }else if(value < curTree->element->value) //NÃO ACHEI O ELEMENTO E O VALOR É MENOR, DELEGO PARA A SUB-ÁRVORE ESQUERDA
@@ -270,7 +271,7 @@ int main()
     // }
     printf("ANTES DE REMOVER\n");
     PrintPreOrder(tree);
-    tree = Remove(tree, 50);
+    tree = Remove(tree, 5);
     printf("DEPOIS DE REMOVER\n");
     PrintPreOrder(tree);
     //PrintInOrder(tree);

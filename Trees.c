@@ -16,7 +16,14 @@ typedef struct Tree_S
 
 bool IsEmpty(tree *tree)
 {
-    return (tree->element == NULL);
+    if(tree == NULL || tree->element == NULL)
+    {
+        return true;
+    }else
+    {
+        return false;
+    }
+    //return (tree->element == NULL);
 }
 
 node* CreateNode(int value)
@@ -72,6 +79,56 @@ void Insert(tree *curTree, node *newNode)
     }
 }
 
+tree* Remove(tree *curTree, int value)
+{
+    if(!IsEmpty(curTree))
+    {
+        //Achei o elemento
+        if(curTree->element->value == value)
+        {
+            //O Elemento está em um nó folha
+            if(curTree->left == NULL && curTree->right == NULL)
+            {
+                return NULL;
+            }else 
+            {
+                if(curTree->left != NULL && curTree->right == NULL) //TENHO FILHOS SÓ NA ESQUERDA
+                {
+                    return curTree->left;
+                }else if(curTree->right != NULL && curTree->left == NULL) //TENHO FILHOS SÓ NA DIREITA
+                {
+                    return curTree->right;
+                }else //TENHO FILHOS NOS DOIS LADOS
+                {
+                    //ADOTANDO A ESTRATÉGIA DO MAIOR DENTRE OS MENORES
+                    tree *temp = curTree->left;
+                    while(temp->right != NULL) //PERCORRENDO A ÁRVORE ATÉ O ÚLTIMO NÓ DA DIREITA DA SUB-ÁRVORE DA ESQUERDA
+                    {
+                        temp = temp->right;
+                    }
+
+                    curTree->element = temp->element; //TROQUEI OS ELEMENTOS DA ÁRVORE
+                    temp->element = CreateNode(value); 
+
+                    curTree->left = Remove(curTree->left, value);
+                    //free(temp);
+                }
+            }
+        }else if(value < curTree->element->value) //NÃO ACHEI O ELEMENTO E O VALOR É MENOR, DELEGO PARA A SUB-ÁRVORE ESQUERDA
+        {
+            curTree->left = Remove(curTree->left, value);
+        }else if(value > curTree->element->value) //NÃO ACHEI O ELEMENTO E O VALOR É MAIOR, DELEGO PARA A SUB-ÁRVORE DIREITA
+        {
+            curTree->right = Remove(curTree->right, value);
+        }
+        //printf("nao achei\n");
+        return curTree; 
+    }else
+    {
+        return curTree;
+    } 
+}
+
 bool Search(tree *curTree, int value)
 {
     //printf("Buscando...\n\n");
@@ -113,6 +170,7 @@ void PrintPreOrder(tree *tree)
     if(IsEmpty(tree))
     {
         printf("Arvore Vazia\n");
+        return;
     }else
     {
         printf("%d\n", tree->element->value);
@@ -210,8 +268,11 @@ int main()
     //         printf("Nao Achei\n");
     //     }
     // }
-
-    // PrintPreOrder(tree);
+    printf("ANTES DE REMOVER\n");
+    PrintPreOrder(tree);
+    tree = Remove(tree, 50);
+    printf("DEPOIS DE REMOVER\n");
+    PrintPreOrder(tree);
     //PrintInOrder(tree);
     //printf("In-OrderReverso\n");
     //PrintInOrderReverse(tree);
